@@ -1,5 +1,7 @@
 {
   "name": "app",
+  "title": "App",
+  "main": "electron/main.js",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,7 +13,8 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "export BROWSER=none && react-scripts start",
+    "start-electron": "export START_URL=http://localhost:3000 && electron .",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -30,5 +33,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^9.0.5",
+    "electron-is-dev": "^1.2.0"
   }
 }

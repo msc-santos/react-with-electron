@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+
+const electron = window.require("electron");
+const ipcRenderer = electron.ipcRenderer;
 
 function App() {
+  const [text, setText] = useState("");
+  const [response, setResponse] = useState("");
+
+  function sendText(e) {
+    e.preventDefault();
+    ipcRenderer.send("env", text);
+    ipcRenderer.on("ret", (event, resp) => {
+      setResponse(resp);
+    });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <form onSubmit={sendText}>
+        <input
+          type="text"
+          placeholder="Texto"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <br />
+        <button type="submit">Enviar</button>
+      </form>
+      <div>{response ? response : null}</div>
     </div>
   );
 }
